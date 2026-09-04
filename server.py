@@ -130,5 +130,7 @@ if os.path.exists(static_path):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 7860 if os.environ.get("SPACE_ID") else 8000))
+    port = int(os.environ.get("PORT", 10000))
+    print(f"[*] Starting server on 0.0.0.0:{port}...")
     uvicorn.run("server:app", host="0.0.0.0", port=port, reload=False)
+

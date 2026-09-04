@@ -9,10 +9,17 @@ try:
 except ImportError:
     HAS_SENTENCE_TRANSFORMERS = False
 
+try:
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
+
 class KnowledgeBaseRetriever:
     """
-    RAG retriever using Sentence Transformers embeddings (MetricGuard pattern)
-    with cosine similarity search and retrieval confidence scoring.
+    RAG retriever using Sentence Transformers (if available) or lightweight
+    TF-IDF Vector cosine similarity (low-RAM friendly) with confidence scoring.
     """
     def __init__(self, data_path: str = None, model_name: str = "all-MiniLM-L6-v2"):
         if data_path is None:
@@ -22,6 +29,8 @@ class KnowledgeBaseRetriever:
         self.data_path = data_path
         self.model_name = model_name
         self.model = None
+        self.tfidf_vectorizer = None
+        self.tfidf_matrix = None
         self.docs = []
         self.embeddings = None
         
@@ -30,10 +39,9 @@ class KnowledgeBaseRetriever:
     def _init_model(self):
         if self.model is None and HAS_SENTENCE_TRANSFORMERS:
             try:
-                # Load lightweight embeddings model
                 self.model = SentenceTransformer(self.model_name)
             except Exception as e:
-                print(f"[WARN] Failed to load SentenceTransformer model ({e}), falling back to keyword/TF-IDF similarity.")
+                print(f"[INFO] Running in lightweight memory mode ({e}).")
                 self.model = None
 
     def load_data(self):
@@ -48,17 +56,23 @@ class KnowledgeBaseRetriever:
     def _build_index(self):
         if not self.docs:
             self.embeddings = None
+            self.tfidf_matrix = None
             return
             
+        texts = [
+            f"{doc.get('title', '')} {doc.get('content', '')} {' '.join(doc.get('tags', []))}"
+            for doc in self.docs
+        ]
+
         self._init_model()
         if self.model:
-            texts = [
-                f"{doc.get('title', '')} - {doc.get('content', '')} Tags: {' '.join(doc.get('tags', []))}"
-                for doc in self.docs
-            ]
             self.embeddings = self.model.encode(texts, normalize_embeddings=True)
+        elif HAS_SKLEARN:
+            self.tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words="english")
+            self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(texts)
         else:
             self.embeddings = None
+
 
     def add_doc(self, title: str, category: str, content: str, tags: List[str] = None) -> Dict[str, Any]:
         doc_id = f"faq_{len(self.docs) + 1:03d}"
@@ -91,9 +105,7 @@ class KnowledgeBaseRetriever:
 
         if self.model and self.embeddings is not None:
             query_emb = self.model.encode([query], normalize_embeddings=True)[0]
-            # Cosine similarity since vectors are normalized
             similarities = np.dot(self.embeddings, query_emb)
-            
             top_indices = np.argsort(similarities)[::-1][:top_k]
             
             results = []
@@ -105,8 +117,24 @@ class KnowledgeBaseRetriever:
                 
             top_score = results[0]["similarity_score"] if results else 0.0
             second_score = results[1]["similarity_score"] if len(results) > 1 else 0.0
-            
-            # Confidence metric based on top similarity and margin over second best match
+            margin = max(0.0, top_score - second_score)
+            confidence = round(float(0.75 * top_score + 0.25 * margin), 4)
+            return results, confidence
+
+        elif HAS_SKLEARN and self.tfidf_matrix is not None and self.tfidf_vectorizer is not None:
+            query_vec = self.tfidf_vectorizer.transform([query])
+            sims = cosine_similarity(query_vec, self.tfidf_matrix)[0]
+            top_indices = np.argsort(sims)[::-1][:top_k]
+
+            results = []
+            for idx in top_indices:
+                score = float(sims[idx])
+                doc = dict(self.docs[idx])
+                doc["similarity_score"] = round(score, 4)
+                results.append(doc)
+
+            top_score = results[0]["similarity_score"] if results else 0.0
+            second_score = results[1]["similarity_score"] if len(results) > 1 else 0.0
             margin = max(0.0, top_score - second_score)
             confidence = round(float(0.75 * top_score + 0.25 * margin), 4)
             return results, confidence
@@ -120,7 +148,6 @@ class KnowledgeBaseRetriever:
                 doc_words = set(doc_text.split())
                 intersection = query_words.intersection(doc_words)
                 score = len(intersection) / (len(query_words) + 1e-5)
-                # Map score to [0, 1] range
                 score = min(1.0, round(score * 1.5, 4))
                 doc_copy = dict(doc)
                 doc_copy["similarity_score"] = score
@@ -130,3 +157,4 @@ class KnowledgeBaseRetriever:
             top_results = scored_docs[:top_k]
             top_score = top_results[0]["similarity_score"] if top_results else 0.0
             return top_results, top_score
+
