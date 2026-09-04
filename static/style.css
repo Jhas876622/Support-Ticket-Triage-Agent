@@ -717,3 +717,202 @@ body {
     gap: 12px;
     margin-top: 18px;
 }
+
+/* ==========================================================================
+   Enterprise 2.0 Enhancements: KPI Ribbon & HITL Console
+   ========================================================================== */
+
+/* Badge v2 */
+.badge-v2 {
+    background: linear-gradient(135deg, #ec4899, #8b5cf6);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+/* KPI Ribbon */
+.kpi-ribbon {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.kpi-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.icon-blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.icon-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.icon-amber { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+.icon-purple { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+
+.kpi-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+}
+
+.kpi-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* Preset Chip Special (Negation) */
+.chip-special {
+    background: rgba(168, 85, 247, 0.15) !important;
+    border-color: rgba(168, 85, 247, 0.4) !important;
+    color: #d8b4fe !important;
+}
+.chip-special:hover {
+    background: rgba(168, 85, 247, 0.25) !important;
+}
+
+/* Streaming Node Active Pulsing */
+.flow-node.streaming-active {
+    border-color: #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+    animation: nodePulse 1.2s infinite ease-in-out;
+}
+
+@keyframes nodePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.85; }
+}
+
+/* Human-In-The-Loop (HITL) Action Drawer */
+.hitl-panel {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+}
+
+.hitl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.hitl-header h4 {
+    color: #fbbf24;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge-hitl {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.hitl-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.hitl-textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    color: #f1f5f9;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    margin-bottom: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.hitl-textarea:focus {
+    border-color: #fbbf24;
+    outline: none;
+}
+
+.hitl-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: #ffffff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-success:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .kpi-ribbon {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .kpi-ribbon {
+        grid-template-columns: 1fr;
+    }
+    .hitl-actions {
+        flex-direction: column;
+    }
+}
+

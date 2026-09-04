@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Ticket Triage Agent (LangGraph)</title>
+    <title>Support Ticket Triage Agent (LangGraph Enterprise 2.0)</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
@@ -21,16 +21,48 @@
                     <i class="fa-solid fa-diagram-project"></i>
                 </div>
                 <div>
-                    <h1>Support Ticket Triage Agent</h1>
-                    <span class="subtitle">Autonomous Customer Support Pipeline powered by LangGraph & RAG</span>
+                    <h1>Support Ticket Triage Agent <span class="badge badge-v2">v2.0 Enterprise</span></h1>
+                    <span class="subtitle">Autonomous Customer Support Pipeline powered by LangGraph, Category-Boosted RAG & SSE Streaming</span>
                 </div>
             </div>
             <div class="header-badges">
-                <span class="badge badge-tech"><i class="fa-brands fa-python"></i> LangGraph</span>
-                <span class="badge badge-rag"><i class="fa-solid fa-vector-square"></i> SentenceTransformers RAG</span>
-                <span class="badge badge-reliable"><i class="fa-solid fa-shield-halved"></i> Reliable AI Fallback</span>
+                <span class="badge badge-tech"><i class="fa-brands fa-python"></i> LangGraph 0.2</span>
+                <span class="badge badge-rag"><i class="fa-solid fa-bolt"></i> Real-Time SSE</span>
+                <span class="badge badge-reliable"><i class="fa-solid fa-user-shield"></i> HITL Console</span>
             </div>
         </header>
+
+        <!-- Live Analytics KPI Ribbon -->
+        <section class="kpi-ribbon">
+            <div class="kpi-card glass-panel">
+                <div class="kpi-icon icon-blue"><i class="fa-solid fa-inbox"></i></div>
+                <div class="kpi-details">
+                    <span class="kpi-value" id="kpi-total">0</span>
+                    <span class="kpi-label">Total Tickets Processed</span>
+                </div>
+            </div>
+            <div class="kpi-card glass-panel">
+                <div class="kpi-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="kpi-details">
+                    <span class="kpi-value" id="kpi-auto-rate">0.0%</span>
+                    <span class="kpi-label">Auto-Resolution Rate</span>
+                </div>
+            </div>
+            <div class="kpi-card glass-panel">
+                <div class="kpi-icon icon-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="kpi-details">
+                    <span class="kpi-value" id="kpi-esc-rate">0.0%</span>
+                    <span class="kpi-label">Human Escalation Rate</span>
+                </div>
+            </div>
+            <div class="kpi-card glass-panel">
+                <div class="kpi-icon icon-purple"><i class="fa-solid fa-bullseye"></i></div>
+                <div class="kpi-details">
+                    <span class="kpi-value" id="kpi-avg-conf">0.00</span>
+                    <span class="kpi-label">Avg. RAG Confidence</span>
+                </div>
+            </div>
+        </section>
 
         <!-- Navigation Tabs -->
         <nav class="nav-tabs">
@@ -56,8 +88,8 @@
                             <div class="preset-chips">
                                 <button class="chip" onclick="loadPreset('password')">🔑 Password Reset</button>
                                 <button class="chip" onclick="loadPreset('billing')">💳 Payment Failed</button>
-                                <button class="chip" onclick="loadPreset('api')">⚡ API 429 Error</button>
-                                <button class="chip chip-warn" onclick="loadPreset('escalate')">⚠️ Ambiguous Request</button>
+                                <button class="chip chip-special" onclick="loadPreset('negation')">🧠 Negation (Fix Bug, No Refund)</button>
+                                <button class="chip chip-warn" onclick="loadPreset('escalate')">⚠️ Ambiguous Smartwatch Request</button>
                             </div>
                         </div>
 
@@ -79,11 +111,11 @@
                                     <span id="threshold-val" class="threshold-display">0.60</span>
                                 </div>
                                 <input type="range" id="threshold_slider" min="0.30" max="0.90" step="0.05" value="0.60" oninput="updateThresholdDisplay(this.value)">
-                                <p class="help-text">Queries with retrieval confidence score &ge; threshold auto-draft replies. Lower confidence triggers human escalation.</p>
+                                <p class="help-text">Confidence &ge; threshold triggers auto-resolution. Confidence &lt; threshold safely routes to human support.</p>
                             </div>
 
                             <button type="submit" id="submit-btn" class="btn btn-primary">
-                                <i class="fa-solid fa-play"></i> Execute LangGraph Triage
+                                <i class="fa-solid fa-play"></i> Run Real-Time Streaming Triage
                             </button>
                         </form>
                     </div>
@@ -92,7 +124,7 @@
                     <div class="panel glass-panel execution-panel">
                         <!-- Node Execution Visual Graph Banner -->
                         <div class="panel-header">
-                            <h2><i class="fa-solid fa-diagram-next"></i> LangGraph Node Pipeline</h2>
+                            <h2><i class="fa-solid fa-diagram-next"></i> Real-Time LangGraph Node Pipeline</h2>
                             <span id="run-status" class="status-indicator ready">Ready</span>
                         </div>
 
@@ -166,6 +198,20 @@
                                 </div>
                             </div>
 
+                            <!-- Human-in-the-Loop (HITL) Action Drawer -->
+                            <div class="hitl-panel glass-panel" id="hitl-panel" style="display: none;">
+                                <div class="hitl-header">
+                                    <h4><i class="fa-solid fa-user-gear"></i> Human-in-the-Loop (HITL) Action Console</h4>
+                                    <span class="badge badge-hitl">Tier-2 Agent Review</span>
+                                </div>
+                                <p class="hitl-desc">This ticket was escalated due to low retrieval confidence. You can modify the drafted response and dispatch it or add it to the knowledge base.</p>
+                                <textarea id="hitl-editor" rows="4" class="hitl-textarea" placeholder="Edit the resolution response here before approving..."></textarea>
+                                <div class="hitl-actions">
+                                    <button class="btn btn-success" onclick="approveHitlResponse()"><i class="fa-solid fa-check"></i> Approve & Dispatch Resolution</button>
+                                    <button class="btn btn-secondary" onclick="convertQueryToFaq()"><i class="fa-solid fa-book-medical"></i> Save as New Knowledge Base FAQ</button>
+                                </div>
+                            </div>
+
                             <!-- Retrieved RAG Knowledge Chunks -->
                             <div class="rag-docs-section">
                                 <h3><i class="fa-solid fa-layer-group"></i> Grounded RAG Documentation Chunks</h3>
@@ -176,7 +222,7 @@
 
                             <!-- Graph Node Execution Trace Log -->
                             <div class="trace-section">
-                                <h3><i class="fa-solid fa-terminal"></i> Graph Execution Trace</h3>
+                                <h3><i class="fa-solid fa-terminal"></i> Real-Time Graph Execution Trace</h3>
                                 <ul id="trace-list" class="trace-list">
                                     <!-- Dynamic Trace Items -->
                                 </ul>
@@ -214,7 +260,7 @@
             <section id="graph-tab" class="tab-content">
                 <div class="panel glass-panel text-center">
                     <h2><i class="fa-solid fa-network-wired"></i> LangGraph Architecture & State Flow</h2>
-                    <p class="section-desc">Visual representation of the Support Ticket Triage Agent's decision state machine.</p>
+                    <p class="section-desc">Visual representation of the Support Ticket Triage Agent's decision state machine with Category Boosting and SSE Streaming.</p>
 
                     <div class="architecture-diagram">
                         <div class="arch-card start-card">
@@ -227,14 +273,14 @@
                         <div class="arch-card">
                             <span class="step-num">Node 1</span>
                             <h4>Classify Node</h4>
-                            <p>Rule-based & keyword sentiment parser for category (billing/technical/general) & priority</p>
+                            <p>Negation-aware semantic engine for category (billing/technical/general) & priority</p>
                         </div>
                         <div class="arch-arrow">&rarr;</div>
 
                         <div class="arch-card">
                             <span class="step-num">Node 2</span>
                             <h4>Retrieve Node</h4>
-                            <p>SentenceTransformers vector embedding search & confidence margin score</p>
+                            <p>Category-boosted vector/TF-IDF similarity search & confidence margin score</p>
                         </div>
                         <div class="arch-arrow">&rarr;</div>
 
@@ -250,7 +296,7 @@
                                 <div class="arch-card outcome-card draft-card">
                                     <span class="step-num">Node 4a</span>
                                     <h4>Draft Reply Node</h4>
-                                    <p>Grounded LLM answer generation with FAQ citations</p>
+                                    <p>Grounded LLM/template resolution with official FAQ citations</p>
                                 </div>
                             </div>
                             <div class="split-branch warn-branch">
@@ -258,7 +304,7 @@
                                 <div class="arch-card outcome-card escalate-card">
                                     <span class="step-num">Node 4b</span>
                                     <h4>Escalate Node</h4>
-                                    <p>Human tier-2 support handoff ticket & audit summary</p>
+                                    <p>Human tier-2 support handoff ticket & interactive HITL console</p>
                                 </div>
                             </div>
                         </div>
@@ -272,7 +318,7 @@
     <div id="add-faq-modal" class="modal">
         <div class="modal-content glass-panel">
             <div class="modal-header">
-                <h3>Add New FAQ Article</h3>
+                <h3 id="modal-heading">Add New FAQ Article</h3>
                 <button class="close-btn" onclick="closeAddFaqModal()">&times;</button>
             </div>
             <form onsubmit="saveCustomFaq(event)">

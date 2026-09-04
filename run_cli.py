@@ -13,6 +13,11 @@ TEST_TICKETS = [
         "threshold": 0.60
     },
     {
+        "name": "Negation Scope Test (Technical with Negated Billing)",
+        "text": "I do NOT want a refund for my billing, please fix the critical webhook 429 timeout bug!",
+        "threshold": 0.60
+    },
+    {
         "name": "Ambiguous/Out-of-Scope (Low Confidence Escalation)",
         "text": "Can your team build a custom satellite communication protocol plugin for my smartwatch?",
         "threshold": 0.65
@@ -21,7 +26,7 @@ TEST_TICKETS = [
 
 def run_test():
     print("=" * 70)
-    print("      SUPPORT TICKET TRIAGE AGENT - LANGGRAPH WORKFLOW CLI      ")
+    print("      SUPPORT TICKET TRIAGE AGENT - ENTERPRISE 2.0 BENCHMARK     ")
     print("=" * 70)
     
     for idx, test in enumerate(TEST_TICKETS, 1):
@@ -45,7 +50,8 @@ def run_test():
         
         print("\nExecution Path:")
         for step in final_state.get("execution_trace", []):
-            print(f"  |- [{step['timestamp']}] Node '{step['node']}': {step['details']}")
+            latency = f" ({step.get('latency_ms', 0)}ms)" if "latency_ms" in step else ""
+            print(f"  |- [{step['timestamp']}] Node '{step['node']}': {step['details']}{latency}")
             
         print("\nGenerated Output:")
         print("-" * 50)
