@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-dark: #080c14; --bg-mid: #0d1120;
     --bg-card: rgba(16,22,40,0.72); --bg-card-hover: rgba(20,28,50,0.85);
     --border-color: rgba(255,255,255,0.07); --border-glow: rgba(99,102,241,0.35);
@@ -426,233 +426,311 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
 }
 
 /* =====================================================
-   DESIGN RESET — "Obsidian Copper" by Satyam Kumar Jha
-   A warm, human-crafted palette. Not AI-generated.
-   Inspired by: Raycast, Linear, Japanese studio aesthetics
+   MODERN FRAMEWORK DESIGN SYSTEM
+   Inspired by Next.js, Linear, Supabase & Tailwind Modern Dark UI
    ===================================================== */
 
 :root {
-    /* Warm near-black backgrounds — has a subtle brown warmth, NOT cold navy */
-    --bg-dark:       #09080a;
-    --bg-mid:        #110f0d;
-    --bg-card:       rgba(22, 18, 15, 0.88);
-    --bg-card-hover: rgba(30, 25, 20, 0.95);
+    --bg-dark:       #080a10;
+    --bg-mid:        #0e131f;
+    --bg-card:       rgba(17, 24, 39, 0.72);
+    --bg-card-hover: rgba(26, 34, 52, 0.85);
 
-    /* Borders with warm copper tint — NOT cold white */
-    --border-color:  rgba(255, 185, 110, 0.09);
-    --border-glow:   rgba(217, 124, 58, 0.35);
+    --border-color:  rgba(255, 255, 255, 0.08);
+    --border-glow:   rgba(99, 102, 241, 0.35);
 
-    /* Warm cream text — NOT pure white */
-    --text-main:  #ede8e0;
-    --text-muted: #9a8f82;
-    --text-dim:   #60564c;
+    --text-main:  #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim:   #64748b;
 
-    /* PRIMARY: Burnt Copper — completely breaks the indigo AI pattern */
-    --primary:       #d97c3a;
-    --primary-hover: #bf6928;
-    --primary-glow:  rgba(217, 124, 58, 0.38);
+    --primary:       #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-glow:  rgba(99, 102, 241, 0.4);
 
-    /* ACCENTS: All warm, all custom — no Tailwind defaults */
-    --accent-cyan:    #4a9e8f;   /* Dusty teal, not neon cyan */
-    --accent-emerald: #5a8c6e;   /* Forest sage, not neon emerald */
-    --accent-amber:   #e8b44a;   /* Warm maize-gold, not tailwind amber */
-    --accent-rose:    #c45e4b;   /* Terracotta, not tailwind rose */
-    --accent-purple:  #7b6fa8;   /* Dusty slate-violet, not neon purple */
+    --accent-cyan:    #06b6d4;
+    --accent-emerald: #10b981;
+    --accent-amber:   #f59e0b;
+    --accent-rose:    #f43f5e;
+    --accent-purple:  #8b5cf6;
 
-    /* Shadows — warmer tone */
-    --shadow-sm:  0 2px 8px rgba(0,0,0,0.5);
-    --shadow-md:  0 8px 24px rgba(0,0,0,0.55);
-    --shadow-lg:  0 16px 48px rgba(0,0,0,0.65);
+    --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-md:  0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg:  0 16px 48px rgba(0, 0, 0, 0.55);
 }
 
-/* ── Warm background: earthy blobs instead of cold radials ── */
+/* Background lighting */
 body {
     background-color: var(--bg-dark);
     background-image:
-        radial-gradient(ellipse 60% 50% at 8% 12%,  rgba(217,124,58,.10) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 92% 88%,  rgba(74,158,143,.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 50% 50%,  rgba(90,140,110,.04) 0%, transparent 65%);
+        radial-gradient(ellipse 70% 55% at 15% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 85% 15%, rgba(6, 182, 212, 0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 65% 55% at 50% 90%, rgba(139, 92, 246, 0.07) 0%, transparent 65%);
 }
 
-/* Subtle diagonal grain instead of grid — much more human */
 body::before {
     background-image:
-        repeating-linear-gradient(
-            -45deg,
-            rgba(255, 180, 100, 0.012) 0px,
-            rgba(255, 180, 100, 0.012) 1px,
-            transparent 1px,
-            transparent 18px
-        );
-    background-size: auto;
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
 }
 
-/* ── Glass panels — warm copper border glow ── */
+/* Glass panel edge highlight */
 .glass-panel::before {
     background: linear-gradient(90deg,
         transparent,
-        rgba(217, 124, 58, 0.5),
-        rgba(74, 158, 143, 0.3),
+        rgba(99, 102, 241, 0.6),
+        rgba(6, 182, 212, 0.45),
         transparent);
 }
 
-/* ── Logo icon — copper gradient ── */
+/* Brand styling */
 .logo-icon {
-    background: linear-gradient(135deg, #d97c3a, #4a9e8f);
-    box-shadow: 0 0 24px rgba(217, 124, 58, 0.45), 0 4px 12px rgba(0,0,0,0.4);
+    background: linear-gradient(135deg, #6366f1, #06b6d4);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.45), 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 @keyframes logoShimmer {
-    0%,100% { box-shadow: 0 0 24px rgba(217,124,58,.45), 0 4px 12px rgba(0,0,0,.4); }
-    50%      { box-shadow: 0 0 38px rgba(217,124,58,.75), 0 4px 16px rgba(0,0,0,.5); }
+    0%, 100% { box-shadow: 0 0 24px rgba(99, 102, 241, 0.45), 0 4px 12px rgba(0, 0, 0, 0.35); }
+    50%      { box-shadow: 0 0 38px rgba(99, 102, 241, 0.75), 0 4px 16px rgba(0, 0, 0, 0.45); }
 }
 
-/* ── Brand title — warm cream gradient ── */
 .brand-title-wrap h1 {
-    background: linear-gradient(135deg, #ede8e0 0%, #d4b896 50%, #a8c5bb 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #a5f3fc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-/* ── Version badge — copper ── */
 .version-badge {
-    background: linear-gradient(135deg, #a0522d, #d97c3a);
-    box-shadow: 0 0 12px rgba(217, 124, 58, 0.45);
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    box-shadow: 0 0 14px rgba(99, 102, 241, 0.4);
 }
 
-/* ── Header badges ── */
-.badge-tech     { background: rgba(217,124,58,.12); color: #e8a870; border-color: rgba(217,124,58,.25); }
-.badge-rag      { background: rgba(74,158,143,.12);  color: #7accc0; border-color: rgba(74,158,143,.25); }
-.badge-reliable { background: rgba(90,140,110,.12);  color: #8ab89e; border-color: rgba(90,140,110,.25); }
+/* Header badges */
+.badge-tech     { background: rgba(99, 102, 241, 0.12); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.25); }
+.badge-rag      { background: rgba(6, 182, 212, 0.12);  color: #67e8f9; border-color: rgba(6, 182, 212, 0.25); }
+.badge-reliable { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.25); }
 
-/* ── KPI icons — warm palette ── */
-.icon-blue   { background: rgba(74,158,143,.18);  color: #7accc0; box-shadow: 0 0 12px rgba(74,158,143,.2); }
-.icon-green  { background: rgba(90,140,110,.18);  color: #8ab89e; box-shadow: 0 0 12px rgba(90,140,110,.2); }
-.icon-amber  { background: rgba(232,180,74,.18);  color: #f0c86a; box-shadow: 0 0 12px rgba(232,180,74,.2); }
-.icon-purple { background: rgba(123,111,168,.18); color: #a89ed4; box-shadow: 0 0 12px rgba(123,111,168,.2); }
+/* KPI cards */
+.icon-blue   { background: rgba(6, 182, 212, 0.18);  color: #38bdf8; box-shadow: 0 0 12px rgba(6, 182, 212, 0.2); }
+.icon-green  { background: rgba(16, 185, 129, 0.18); color: #34d399; box-shadow: 0 0 12px rgba(16, 185, 129, 0.2); }
+.icon-amber  { background: rgba(245, 158, 11, 0.18); color: #fbbf24; box-shadow: 0 0 12px rgba(245, 158, 11, 0.2); }
+.icon-purple { background: rgba(139, 92, 246, 0.18); color: #c084fc; box-shadow: 0 0 12px rgba(139, 92, 246, 0.2); }
 
-/* KPI card hover */
 .kpi-card:hover {
-    border-color: rgba(217, 124, 58, 0.28);
-    box-shadow: 0 12px 32px rgba(0,0,0,.5), 0 0 20px rgba(217,124,58,.12);
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 20px rgba(99, 102, 241, 0.18);
 }
 
-/* ── Nav tabs — copper active ── */
+/* Nav tabs */
 .tab-btn.active {
-    color: #e8a870;
+    color: #a5b4fc;
     border-bottom-color: var(--primary);
-    background: rgba(217, 124, 58, 0.09);
+    background: rgba(99, 102, 241, 0.1);
 }
 .tab-btn:hover { color: var(--text-main); }
 
-/* ── Slider thumb — copper ── */
-input[type=range]::-webkit-slider-thumb {
-    background: var(--primary);
-    box-shadow: 0 0 8px var(--primary-glow);
+/* Form inputs */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    background: rgba(10, 14, 26, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-/* ── Primary button — copper ── */
-.btn-primary {
-    background: linear-gradient(135deg, #d97c3a, #bf6928);
-    box-shadow: 0 4px 16px rgba(217, 124, 58, 0.4);
-}
-.btn-primary:hover {
-    box-shadow: 0 8px 24px rgba(217, 124, 58, 0.6);
-}
-
-/* ── Status indicator — warm palette ── */
-.status-indicator.running  { background: rgba(232,180,74,.15);  color: #f0c86a; }
-.status-indicator.running::before  { background: #e8b44a; }
-.status-indicator.resolved { background: rgba(90,140,110,.15);  color: #8ab89e; }
-.status-indicator.resolved::before { background: #5a8c6e; }
-.status-indicator.escalated{ background: rgba(196,94,75,.15);   color: #d9846e; }
-.status-indicator.escalated::before{ background: #c45e4b; }
-
-/* ── Pipeline nodes — copper active ── */
-.flow-node.streaming-active {
-    border-color: #d97c3a !important;
-    background: rgba(217, 124, 58, 0.12) !important;
-    box-shadow: 0 0 18px rgba(217, 124, 58, 0.3);
-}
-.flow-node.completed  { border-color: #5a8c6e; background: rgba(90,140,110,.1); }
-.flow-node.escalated  { border-color: #c45e4b; background: rgba(196,94,75,.12); }
-
-/* ── Pulse dot — copper ── */
-@keyframes dotPulse {
-    0%,100% { opacity:1; transform:scale(1); }
-    50%      { opacity:.4; transform:scale(.7); }
-}
-
-/* ── RAG doc card accent ── */
-.rag-doc-title   { color: #7accc0; }
-.similarity-badge{ background: rgba(74,158,143,.18); color: #7accc0; }
-.rag-doc-card:hover { border-color: rgba(74,158,143,.2); background: rgba(74,158,143,.04); }
-
-/* ── Trace ── */
-.trace-time { color: #e8a870; }
-.trace-node { color: var(--primary); }
-
-/* ── FAQ card left borders ── */
-.faq-card[data-cat=billing]   { border-left-color: #e8b44a; }
-.faq-card[data-cat=technical] { border-left-color: var(--primary); }
-.faq-card[data-cat=general]   { border-left-color: #5a8c6e; }
-
-/* Category pills */
-.cat-billing   { background: rgba(232,180,74,.18);  color: #f0c86a; }
-.cat-technical { background: rgba(217,124,58,.18);  color: #e8a870; }
-.cat-general   { background: rgba(90,140,110,.18);  color: #8ab89e; }
-
-.faq-cat.cat-billing   { background: rgba(232,180,74,.18);  color: #f0c86a; }
-.faq-cat.cat-technical { background: rgba(217,124,58,.18);  color: #e8a870; }
-.faq-cat.cat-general   { background: rgba(90,140,110,.18);  color: #8ab89e; }
-
-/* ── HITL panel — warm amber ── */
-.hitl-panel   { background: rgba(232,180,74,.05); border-color: rgba(232,180,74,.22); border-left-color: #e8b44a; }
-.hitl-header h4 { color: #f0c86a; }
-.badge-hitl   { background: rgba(232,180,74,.18); color: #f0c86a; border-color: rgba(232,180,74,.35); }
-.hitl-textarea:focus { border-color: #e8b44a; box-shadow: 0 0 0 3px rgba(232,180,74,.15); }
-
-/* ── HITL buttons ── */
-.btn-success { background: linear-gradient(135deg, #3d7a5e, #5a8c6e); box-shadow: 0 4px 12px rgba(90,140,110,.3); }
-.btn-success:hover { box-shadow: 0 8px 20px rgba(90,140,110,.5); }
-.btn-ghost:hover { border-color: rgba(217,124,58,.4); color: #e8a870; background: rgba(217,124,58,.08); }
-
-/* ── Empty state — copper icon ── */
-.empty-state-icon { background: rgba(217,124,58,.1); color: var(--primary); border-color: rgba(217,124,58,.2); }
-.empty-state-cta  { background: linear-gradient(135deg, #d97c3a, #bf6928); }
-.empty-state-cta:hover { box-shadow: 0 6px 16px rgba(217,124,58,.4); }
-
-/* ── Arch diagram cards ── */
-.start-card    { border-color: rgba(217,124,58,.35); background: rgba(217,124,58,.07); }
-.draft-card    { border-color: rgba(90,140,110,.35);  background: rgba(90,140,110,.07); }
-.escalate-card { border-color: rgba(196,94,75,.35);   background: rgba(196,94,75,.07); }
-.step-num      { color: #7accc0; }
-
-/* ── Form focus glow — copper ── */
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(217, 124, 58, 0.18);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    background: rgba(12, 17, 32, 0.7);
 }
 
-/* ── Chip hover — copper ── */
-.chip:hover { background: rgba(217,124,58,.18); border-color: var(--primary); color: #e8a870; }
+/* Preset chips */
+.chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.chip:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.4);
+    color: #c7d2fe;
+}
 
-/* ── Advanced toggle ── */
-.advanced-toggle:hover { background: rgba(217,124,58,.06); }
-.toggle-count { background: rgba(217,124,58,.25); color: #e8a870; }
+/* Threshold slider & display — Clean pill badge without layout collisions */
+.threshold-box {
+    background: rgba(10, 14, 26, 0.4);
+    border: 1px solid var(--border-color);
+}
+.threshold-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.threshold-display {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent-cyan);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+}
+.threshold-display.th-strict {
+    color: #fb7185;
+    background: rgba(244, 63, 94, 0.12);
+    border-color: rgba(244, 63, 94, 0.3);
+}
+.threshold-display.th-balanced {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+.threshold-display.th-auto {
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+}
 
-/* ── Threshold zone colors ── */
-.threshold-display.zone-strict   { color: #d9846e; }
-.threshold-display.zone-balanced { color: #f0c86a; }
-.threshold-display.zone-auto     { color: #8ab89e; }
+input[type=range]::-webkit-slider-thumb {
+    background: #fff;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+}
 
-/* ── Stat card top border per type ── */
-.stat-card.stat-category::before   { background: #4a9e8f; }
-.stat-card.stat-priority::before   { background: #e8b44a; }
-.stat-card.stat-confidence::before { background: #5a8c6e; }
-.stat-card.stat-action::before     { background: #7b6fa8; }
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 4px 16px rgba(99, 102, 241, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.btn-primary:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(99, 102, 241, 0.6);
+    transform: translateY(-2px);
+}
 
-/* ── Similarity badge in RAG docs ── */
+.btn-success {
+    background: linear-gradient(135deg, #059669, #10b981);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+.btn-success:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 20px rgba(16, 185, 129, 0.5);
+}
+
+.btn-ghost:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.08);
+}
+
+/* Status indicators */
+.status-indicator.ready     { background: rgba(148, 163, 184, 0.12); color: #94a3b8; }
+.status-indicator.ready::before { background: #64748b; }
+.status-indicator.running   { background: rgba(245, 158, 11, 0.14);  color: #fbbf24; }
+.status-indicator.running::before  { background: #f59e0b; }
+.status-indicator.resolved  { background: rgba(16, 185, 129, 0.14); color: #34d399; }
+.status-indicator.resolved::before { background: #10b981; }
+.status-indicator.escalated { background: rgba(244, 63, 94, 0.14);  color: #fb7185; }
+.status-indicator.escalated::before{ background: #f43f5e; }
+
+/* Pipeline nodes */
+.flow-node.streaming-active {
+    border-color: #6366f1 !important;
+    background: rgba(99, 102, 241, 0.14) !important;
+    box-shadow: 0 0 18px rgba(99, 102, 241, 0.35);
+}
+.flow-node.completed {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.08);
+}
+.flow-node.escalated {
+    border-color: rgba(244, 63, 94, 0.4);
+    background: rgba(244, 63, 94, 0.08);
+}
+
+/* Pulse dot */
+@keyframes dotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* RAG doc card */
+.rag-doc-title    { color: #38bdf8; }
+.similarity-badge { background: rgba(6, 182, 212, 0.16); color: #38bdf8; font-family: var(--font-mono); }
+.rag-doc-card:hover { border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.04); }
+
+/* Trace */
+.trace-time { color: #818cf8; }
+.trace-node { color: var(--primary); }
+
+/* FAQ card left borders */
+.faq-card[data-cat=billing]   { border-left-color: #f59e0b; }
+.faq-card[data-cat=technical] { border-left-color: #6366f1; }
+.faq-card[data-cat=general]   { border-left-color: #10b981; }
+
+.cat-billing   { background: rgba(245, 158, 11, 0.16);  color: #fbbf24; }
+.cat-technical { background: rgba(99, 102, 241, 0.16);  color: #a5b4fc; }
+.cat-general   { background: rgba(16, 185, 129, 0.16); color: #34d399; }
+
+.faq-cat.cat-billing   { background: rgba(245, 158, 11, 0.16);  color: #fbbf24; }
+.faq-cat.cat-technical { background: rgba(99, 102, 241, 0.16);  color: #a5b4fc; }
+.faq-cat.cat-general   { background: rgba(16, 185, 129, 0.16); color: #34d399; }
+
+/* HITL panel */
+.hitl-panel {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.25);
+    border-left-color: #f59e0b;
+}
+.hitl-header h4 { color: #fbbf24; }
+.badge-hitl {
+    background: rgba(245, 158, 11, 0.16);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.3);
+}
+.hitl-textarea:focus {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+/* Empty state */
+.empty-state-icon {
+    background: rgba(99, 102, 241, 0.12);
+    color: #818cf8;
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.18);
+}
+.empty-state-cta {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+.empty-state-cta:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 20px rgba(79, 70, 229, 0.55);
+}
+
+/* Arch diagram cards */
+.start-card    { border-color: rgba(99, 102, 241, 0.35); background: rgba(99, 102, 241, 0.07); }
+.draft-card    { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.07); }
+.escalate-card { border-color: rgba(244, 63, 94, 0.35);  background: rgba(244, 63, 94, 0.07); }
+.step-num      { color: #38bdf8; }
+
+/* Advanced toggle */
+.advanced-toggle:hover { background: rgba(99, 102, 241, 0.06); }
+.toggle-count { background: rgba(99, 102, 241, 0.22); color: #a5b4fc; }
+
+/* Stat card top border per type */
+.stat-card.stat-category::before   { background: #06b6d4; }
+.stat-card.stat-priority::before   { background: #f59e0b; }
+.stat-card.stat-confidence::before { background: #10b981; }
+.stat-card.stat-action::before     { background: #8b5cf6; }
+
+/* Similarity badge in RAG docs */
 .similarity-badge { font-family: var(--font-mono); }
+

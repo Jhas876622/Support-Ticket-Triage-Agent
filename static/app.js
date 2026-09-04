@@ -51,12 +51,13 @@ function setupTabNavigation() {
 function updateThresholdDisplay(val) {
     const v = parseFloat(val);
     const el = document.getElementById("threshold-val");
+    if (!el) return;
     el.innerText = v.toFixed(2);
-    // IA: Color zone feedback
+    // Dynamic color zone feedback
     el.className = 'threshold-display';
-    if (v < 0.50)      el.classList.add('zone-strict');
-    else if (v < 0.70) el.classList.add('zone-balanced');
-    else               el.classList.add('zone-auto');
+    if (v < 0.50)      el.classList.add('th-strict');
+    else if (v < 0.70) el.classList.add('th-balanced');
+    else               el.classList.add('th-auto');
 }
 
 function loadPreset(key) {
