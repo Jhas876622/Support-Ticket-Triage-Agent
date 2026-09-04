@@ -1,14 +1,3 @@
----
-title: Support Ticket Triage Agent
-emoji: 🎫
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-pinned: true
-license: mit
-short_description: LangGraph + RAG powered AI Customer Support Triage System
----
-
 # Support Ticket Triage Agent (LangGraph + RAG)
 
 An autonomous Customer Support Ticket Triage Agent built with **LangGraph**, **Sentence Transformers RAG Retrieval**, and **Reliable AI Conditional Routing**.
