@@ -424,3 +424,235 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
     background: var(--primary);
     opacity: .6;
 }
+
+/* =====================================================
+   DESIGN RESET — "Obsidian Copper" by Satyam Kumar Jha
+   A warm, human-crafted palette. Not AI-generated.
+   Inspired by: Raycast, Linear, Japanese studio aesthetics
+   ===================================================== */
+
+:root {
+    /* Warm near-black backgrounds — has a subtle brown warmth, NOT cold navy */
+    --bg-dark:       #09080a;
+    --bg-mid:        #110f0d;
+    --bg-card:       rgba(22, 18, 15, 0.88);
+    --bg-card-hover: rgba(30, 25, 20, 0.95);
+
+    /* Borders with warm copper tint — NOT cold white */
+    --border-color:  rgba(255, 185, 110, 0.09);
+    --border-glow:   rgba(217, 124, 58, 0.35);
+
+    /* Warm cream text — NOT pure white */
+    --text-main:  #ede8e0;
+    --text-muted: #9a8f82;
+    --text-dim:   #60564c;
+
+    /* PRIMARY: Burnt Copper — completely breaks the indigo AI pattern */
+    --primary:       #d97c3a;
+    --primary-hover: #bf6928;
+    --primary-glow:  rgba(217, 124, 58, 0.38);
+
+    /* ACCENTS: All warm, all custom — no Tailwind defaults */
+    --accent-cyan:    #4a9e8f;   /* Dusty teal, not neon cyan */
+    --accent-emerald: #5a8c6e;   /* Forest sage, not neon emerald */
+    --accent-amber:   #e8b44a;   /* Warm maize-gold, not tailwind amber */
+    --accent-rose:    #c45e4b;   /* Terracotta, not tailwind rose */
+    --accent-purple:  #7b6fa8;   /* Dusty slate-violet, not neon purple */
+
+    /* Shadows — warmer tone */
+    --shadow-sm:  0 2px 8px rgba(0,0,0,0.5);
+    --shadow-md:  0 8px 24px rgba(0,0,0,0.55);
+    --shadow-lg:  0 16px 48px rgba(0,0,0,0.65);
+}
+
+/* ── Warm background: earthy blobs instead of cold radials ── */
+body {
+    background-color: var(--bg-dark);
+    background-image:
+        radial-gradient(ellipse 60% 50% at 8% 12%,  rgba(217,124,58,.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 92% 88%,  rgba(74,158,143,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 50% 50%,  rgba(90,140,110,.04) 0%, transparent 65%);
+}
+
+/* Subtle diagonal grain instead of grid — much more human */
+body::before {
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            rgba(255, 180, 100, 0.012) 0px,
+            rgba(255, 180, 100, 0.012) 1px,
+            transparent 1px,
+            transparent 18px
+        );
+    background-size: auto;
+}
+
+/* ── Glass panels — warm copper border glow ── */
+.glass-panel::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(217, 124, 58, 0.5),
+        rgba(74, 158, 143, 0.3),
+        transparent);
+}
+
+/* ── Logo icon — copper gradient ── */
+.logo-icon {
+    background: linear-gradient(135deg, #d97c3a, #4a9e8f);
+    box-shadow: 0 0 24px rgba(217, 124, 58, 0.45), 0 4px 12px rgba(0,0,0,0.4);
+}
+@keyframes logoShimmer {
+    0%,100% { box-shadow: 0 0 24px rgba(217,124,58,.45), 0 4px 12px rgba(0,0,0,.4); }
+    50%      { box-shadow: 0 0 38px rgba(217,124,58,.75), 0 4px 16px rgba(0,0,0,.5); }
+}
+
+/* ── Brand title — warm cream gradient ── */
+.brand-title-wrap h1 {
+    background: linear-gradient(135deg, #ede8e0 0%, #d4b896 50%, #a8c5bb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ── Version badge — copper ── */
+.version-badge {
+    background: linear-gradient(135deg, #a0522d, #d97c3a);
+    box-shadow: 0 0 12px rgba(217, 124, 58, 0.45);
+}
+
+/* ── Header badges ── */
+.badge-tech     { background: rgba(217,124,58,.12); color: #e8a870; border-color: rgba(217,124,58,.25); }
+.badge-rag      { background: rgba(74,158,143,.12);  color: #7accc0; border-color: rgba(74,158,143,.25); }
+.badge-reliable { background: rgba(90,140,110,.12);  color: #8ab89e; border-color: rgba(90,140,110,.25); }
+
+/* ── KPI icons — warm palette ── */
+.icon-blue   { background: rgba(74,158,143,.18);  color: #7accc0; box-shadow: 0 0 12px rgba(74,158,143,.2); }
+.icon-green  { background: rgba(90,140,110,.18);  color: #8ab89e; box-shadow: 0 0 12px rgba(90,140,110,.2); }
+.icon-amber  { background: rgba(232,180,74,.18);  color: #f0c86a; box-shadow: 0 0 12px rgba(232,180,74,.2); }
+.icon-purple { background: rgba(123,111,168,.18); color: #a89ed4; box-shadow: 0 0 12px rgba(123,111,168,.2); }
+
+/* KPI card hover */
+.kpi-card:hover {
+    border-color: rgba(217, 124, 58, 0.28);
+    box-shadow: 0 12px 32px rgba(0,0,0,.5), 0 0 20px rgba(217,124,58,.12);
+}
+
+/* ── Nav tabs — copper active ── */
+.tab-btn.active {
+    color: #e8a870;
+    border-bottom-color: var(--primary);
+    background: rgba(217, 124, 58, 0.09);
+}
+.tab-btn:hover { color: var(--text-main); }
+
+/* ── Slider thumb — copper ── */
+input[type=range]::-webkit-slider-thumb {
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+/* ── Primary button — copper ── */
+.btn-primary {
+    background: linear-gradient(135deg, #d97c3a, #bf6928);
+    box-shadow: 0 4px 16px rgba(217, 124, 58, 0.4);
+}
+.btn-primary:hover {
+    box-shadow: 0 8px 24px rgba(217, 124, 58, 0.6);
+}
+
+/* ── Status indicator — warm palette ── */
+.status-indicator.running  { background: rgba(232,180,74,.15);  color: #f0c86a; }
+.status-indicator.running::before  { background: #e8b44a; }
+.status-indicator.resolved { background: rgba(90,140,110,.15);  color: #8ab89e; }
+.status-indicator.resolved::before { background: #5a8c6e; }
+.status-indicator.escalated{ background: rgba(196,94,75,.15);   color: #d9846e; }
+.status-indicator.escalated::before{ background: #c45e4b; }
+
+/* ── Pipeline nodes — copper active ── */
+.flow-node.streaming-active {
+    border-color: #d97c3a !important;
+    background: rgba(217, 124, 58, 0.12) !important;
+    box-shadow: 0 0 18px rgba(217, 124, 58, 0.3);
+}
+.flow-node.completed  { border-color: #5a8c6e; background: rgba(90,140,110,.1); }
+.flow-node.escalated  { border-color: #c45e4b; background: rgba(196,94,75,.12); }
+
+/* ── Pulse dot — copper ── */
+@keyframes dotPulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.4; transform:scale(.7); }
+}
+
+/* ── RAG doc card accent ── */
+.rag-doc-title   { color: #7accc0; }
+.similarity-badge{ background: rgba(74,158,143,.18); color: #7accc0; }
+.rag-doc-card:hover { border-color: rgba(74,158,143,.2); background: rgba(74,158,143,.04); }
+
+/* ── Trace ── */
+.trace-time { color: #e8a870; }
+.trace-node { color: var(--primary); }
+
+/* ── FAQ card left borders ── */
+.faq-card[data-cat=billing]   { border-left-color: #e8b44a; }
+.faq-card[data-cat=technical] { border-left-color: var(--primary); }
+.faq-card[data-cat=general]   { border-left-color: #5a8c6e; }
+
+/* Category pills */
+.cat-billing   { background: rgba(232,180,74,.18);  color: #f0c86a; }
+.cat-technical { background: rgba(217,124,58,.18);  color: #e8a870; }
+.cat-general   { background: rgba(90,140,110,.18);  color: #8ab89e; }
+
+.faq-cat.cat-billing   { background: rgba(232,180,74,.18);  color: #f0c86a; }
+.faq-cat.cat-technical { background: rgba(217,124,58,.18);  color: #e8a870; }
+.faq-cat.cat-general   { background: rgba(90,140,110,.18);  color: #8ab89e; }
+
+/* ── HITL panel — warm amber ── */
+.hitl-panel   { background: rgba(232,180,74,.05); border-color: rgba(232,180,74,.22); border-left-color: #e8b44a; }
+.hitl-header h4 { color: #f0c86a; }
+.badge-hitl   { background: rgba(232,180,74,.18); color: #f0c86a; border-color: rgba(232,180,74,.35); }
+.hitl-textarea:focus { border-color: #e8b44a; box-shadow: 0 0 0 3px rgba(232,180,74,.15); }
+
+/* ── HITL buttons ── */
+.btn-success { background: linear-gradient(135deg, #3d7a5e, #5a8c6e); box-shadow: 0 4px 12px rgba(90,140,110,.3); }
+.btn-success:hover { box-shadow: 0 8px 20px rgba(90,140,110,.5); }
+.btn-ghost:hover { border-color: rgba(217,124,58,.4); color: #e8a870; background: rgba(217,124,58,.08); }
+
+/* ── Empty state — copper icon ── */
+.empty-state-icon { background: rgba(217,124,58,.1); color: var(--primary); border-color: rgba(217,124,58,.2); }
+.empty-state-cta  { background: linear-gradient(135deg, #d97c3a, #bf6928); }
+.empty-state-cta:hover { box-shadow: 0 6px 16px rgba(217,124,58,.4); }
+
+/* ── Arch diagram cards ── */
+.start-card    { border-color: rgba(217,124,58,.35); background: rgba(217,124,58,.07); }
+.draft-card    { border-color: rgba(90,140,110,.35);  background: rgba(90,140,110,.07); }
+.escalate-card { border-color: rgba(196,94,75,.35);   background: rgba(196,94,75,.07); }
+.step-num      { color: #7accc0; }
+
+/* ── Form focus glow — copper ── */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(217, 124, 58, 0.18);
+}
+
+/* ── Chip hover — copper ── */
+.chip:hover { background: rgba(217,124,58,.18); border-color: var(--primary); color: #e8a870; }
+
+/* ── Advanced toggle ── */
+.advanced-toggle:hover { background: rgba(217,124,58,.06); }
+.toggle-count { background: rgba(217,124,58,.25); color: #e8a870; }
+
+/* ── Threshold zone colors ── */
+.threshold-display.zone-strict   { color: #d9846e; }
+.threshold-display.zone-balanced { color: #f0c86a; }
+.threshold-display.zone-auto     { color: #8ab89e; }
+
+/* ── Stat card top border per type ── */
+.stat-card.stat-category::before   { background: #4a9e8f; }
+.stat-card.stat-priority::before   { background: #e8b44a; }
+.stat-card.stat-confidence::before { background: #5a8c6e; }
+.stat-card.stat-action::before     { background: #7b6fa8; }
+
+/* ── Similarity badge in RAG docs ── */
+.similarity-badge { font-family: var(--font-mono); }
