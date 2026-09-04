@@ -3,353 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Ticket Triage Agent (LangGraph Enterprise 2.0)</title>
-    <!-- Google Fonts -->
+    <title>Support Ticket Triage Agent — LangGraph Enterprise 2.0</title>
+    <meta name="description" content="Autonomous AI support ticket triage pipeline with real-time streaming, RAG, and Human-in-the-Loop escalation.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=3.0">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header / Navbar -->
-        <header class="app-header">
-            <div class="brand">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-diagram-project"></i>
-                </div>
-                <div>
-                    <h1>Support Ticket Triage Agent <span class="badge badge-v2">v2.0 Enterprise</span></h1>
-                    <span class="subtitle">Autonomous Customer Support Pipeline powered by LangGraph, Category-Boosted RAG & SSE Streaming</span>
-                </div>
-            </div>
-            <div class="header-badges">
-                <span class="badge badge-tech"><i class="fa-brands fa-python"></i> LangGraph 0.2</span>
-                <span class="badge badge-rag"><i class="fa-solid fa-bolt"></i> Real-Time SSE</span>
-                <span class="badge badge-reliable"><i class="fa-solid fa-user-shield"></i> HITL Console</span>
-            </div>
-        </header>
+<div class="app-container">
 
-        <!-- Live Analytics KPI Ribbon -->
-        <section class="kpi-ribbon">
-            <div class="kpi-card glass-panel">
-                <div class="kpi-icon icon-blue"><i class="fa-solid fa-inbox"></i></div>
-                <div class="kpi-details">
-                    <span class="kpi-value" id="kpi-total">0</span>
-                    <span class="kpi-label">Total Tickets Processed</span>
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <header class="app-header">
+        <div class="brand">
+            <div class="logo-icon"><i class="fa-solid fa-diagram-project"></i></div>
+            <div class="brand-text">
+                <div class="brand-title-wrap">
+                    <h1>Support Ticket Triage Agent</h1>
+                    <span class="version-badge">v2.0 Enterprise</span>
                 </div>
+                <span class="subtitle">Autonomous pipeline powered by LangGraph · Category-Boosted RAG · SSE Streaming</span>
             </div>
-            <div class="kpi-card glass-panel">
-                <div class="kpi-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
-                <div class="kpi-details">
-                    <span class="kpi-value" id="kpi-auto-rate">0.0%</span>
-                    <span class="kpi-label">Auto-Resolution Rate</span>
+        </div>
+        <div class="header-badges">
+            <span class="badge badge-tech"><i class="fa-brands fa-python"></i> LangGraph 0.2</span>
+            <span class="badge badge-rag"><i class="fa-solid fa-bolt"></i> Real-Time SSE</span>
+            <span class="badge badge-reliable"><i class="fa-solid fa-user-shield"></i> HITL Console</span>
+        </div>
+    </header>
+
+    <!-- ═══════════════ KPI RIBBON ═══════════════ -->
+    <section class="kpi-ribbon">
+        <div class="kpi-card" id="kpi-card-total">
+            <div class="kpi-icon icon-blue"><i class="fa-solid fa-inbox"></i></div>
+            <div class="kpi-details">
+                <span class="kpi-value" id="kpi-total">—</span>
+                <span class="kpi-label">Total Tickets Processed</span>
+            </div>
+        </div>
+        <div class="kpi-card" id="kpi-card-auto">
+            <div class="kpi-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="kpi-details">
+                <span class="kpi-value" id="kpi-auto-rate">—</span>
+                <span class="kpi-label">Auto-Resolution Rate</span>
+            </div>
+        </div>
+        <div class="kpi-card" id="kpi-card-esc">
+            <div class="kpi-icon icon-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-details">
+                <span class="kpi-value" id="kpi-esc-rate">—</span>
+                <span class="kpi-label">Human Escalation Rate</span>
+            </div>
+        </div>
+        <div class="kpi-card" id="kpi-card-conf">
+            <div class="kpi-icon icon-purple"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="kpi-details">
+                <span class="kpi-value" id="kpi-avg-conf">—</span>
+                <span class="kpi-label">Avg. RAG Confidence</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ NAV TABS ═══════════════ -->
+    <nav class="nav-tabs">
+        <button class="tab-btn active" data-tab="triage-tab"><i class="fa-solid fa-ticket"></i> Triage Console</button>
+        <button class="tab-btn" data-tab="kb-tab"><i class="fa-solid fa-book-bookmark"></i> Knowledge Base (<span id="faq-count">14</span>)</button>
+        <button class="tab-btn" data-tab="graph-tab"><i class="fa-solid fa-network-wired"></i> Pipeline Architecture</button>
+    </nav>
+
+    <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+    <main class="main-content">
+
+        <!-- ── TAB 1: TRIAGE CONSOLE ── -->
+        <section id="triage-tab" class="tab-content active">
+            <div class="grid-layout">
+
+                <!-- LEFT: Input Panel -->
+                <div class="panel glass-panel input-panel">
+                    <div class="panel-header">
+                        <h2><i class="fa-solid fa-pen-to-square"></i> Submit Customer Ticket</h2>
+                    </div>
+
+                    <div class="presets-section">
+                        <label><i class="fa-solid fa-bolt"></i> Quick Test Presets:</label>
+                        <div class="preset-chips">
+                            <button class="chip" onclick="loadPreset('password')">🔑 Password Reset</button>
+                            <button class="chip" onclick="loadPreset('billing')">💳 Payment Failed</button>
+                            <button class="chip chip-special" onclick="loadPreset('negation')">🧠 Negation Test</button>
+                            <button class="chip chip-warn" onclick="loadPreset('escalate')">⚠️ Ambiguous Query</button>
+                        </div>
+                    </div>
+
+                    <form id="triage-form" onsubmit="submitTicket(event)">
+                        <div class="form-group">
+                            <label for="customer_id">Customer ID</label>
+                            <input type="text" id="customer_id" value="CUST-9042" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket_text">Ticket Query / Message</label>
+                            <textarea id="ticket_text" rows="5" placeholder="Describe the customer issue or support request..." required></textarea>
+                        </div>
+
+                        <!-- Threshold Slider with Color Zones -->
+                        <div class="form-group threshold-box">
+                            <div class="threshold-label">
+                                <label for="threshold_slider"><i class="fa-solid fa-sliders"></i> Routing Confidence Threshold</label>
+                                <span id="threshold-val" class="threshold-display">0.60</span>
+                            </div>
+                            <input type="range" id="threshold_slider" min="0.30" max="0.90" step="0.05" value="0.60" oninput="updateThresholdDisplay(this.value)">
+                            <div class="slider-zones">
+                                <div class="zone-strict"></div>
+                                <div class="zone-balanced"></div>
+                                <div class="zone-auto"></div>
+                            </div>
+                            <div class="zone-labels">
+                                <span>🔴 Strict Escalation</span>
+                                <span>🟡 Balanced</span>
+                                <span>🟢 Auto-Resolve</span>
+                            </div>
+                            <p class="help-text">Confidence ≥ threshold → auto-drafted reply. Below threshold → human escalation via HITL console.</p>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn btn-primary">
+                            <i class="fa-solid fa-play"></i> Run Real-Time Streaming Triage
+                        </button>
+                    </form>
                 </div>
-            </div>
-            <div class="kpi-card glass-panel">
-                <div class="kpi-icon icon-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div class="kpi-details">
-                    <span class="kpi-value" id="kpi-esc-rate">0.0%</span>
-                    <span class="kpi-label">Human Escalation Rate</span>
+
+                <!-- RIGHT: Execution Panel -->
+                <div class="panel glass-panel execution-panel">
+                    <div class="panel-header">
+                        <h2><i class="fa-solid fa-diagram-next"></i> Real-Time Pipeline Execution</h2>
+                        <span id="run-status" class="status-indicator ready">Ready</span>
+                    </div>
+
+                    <!-- Node Pipeline -->
+                    <div class="pipeline-flow">
+                        <div class="flow-node" id="node-classify">
+                            <div class="node-icon"><i class="fa-solid fa-filter"></i></div>
+                            <div class="node-body">
+                                <div class="node-title">1. Classify</div>
+                                <div class="node-sub" id="sub-classify">Awaiting input</div>
+                            </div>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-node" id="node-retrieve">
+                            <div class="node-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div class="node-body">
+                                <div class="node-title">2. Retrieve</div>
+                                <div class="node-sub" id="sub-retrieve">Awaiting input</div>
+                            </div>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-node" id="node-decide">
+                            <div class="node-icon"><i class="fa-solid fa-code-branch"></i></div>
+                            <div class="node-body">
+                                <div class="node-title">3. Decide</div>
+                                <div class="node-sub" id="sub-decide">Awaiting input</div>
+                            </div>
+                        </div>
+                        <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="flow-node" id="node-outcome">
+                            <div class="node-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                            <div class="node-body">
+                                <div class="node-title" id="title-outcome">4. Output</div>
+                                <div class="node-sub" id="sub-outcome">Awaiting input</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 5: Empty State (shown before first run) -->
+                    <div class="empty-state" id="results-empty-state">
+                        <div class="empty-state-icon"><i class="fa-solid fa-rocket"></i></div>
+                        <h3>Ready to Triage</h3>
+                        <p>Select a preset or enter a customer ticket, then click Run to see the live pipeline in action.</p>
+                    </div>
+
+                    <!-- Results Dashboard (hidden until run) -->
+                    <div class="results-dashboard" id="results-dashboard" style="display:none;">
+
+                        <!-- Stats Row -->
+                        <div class="stats-row">
+                            <div class="stat-card">
+                                <span class="stat-label">Category</span>
+                                <span class="stat-value" id="res-category">—</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Priority</span>
+                                <span class="stat-value" id="res-priority">—</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Confidence</span>
+                                <span class="stat-value" id="res-confidence">—</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-label">Final Action</span>
+                                <span class="stat-value" id="res-status">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Response Box -->
+                        <div class="response-box" id="response-box">
+                            <div class="box-header">
+                                <h3 id="response-box-title"><i class="fa-solid fa-robot"></i> Generated Response</h3>
+                            </div>
+                            <div class="box-body" id="response-body">Processing...</div>
+                        </div>
+
+                        <!-- HITL Console -->
+                        <div class="hitl-panel glass-panel" id="hitl-panel" style="display:none;">
+                            <div class="hitl-header">
+                                <h4><i class="fa-solid fa-user-gear"></i> Human-in-the-Loop Console</h4>
+                                <span class="badge badge-hitl">Tier-2 Agent Review</span>
+                            </div>
+                            <p class="hitl-desc">Low retrieval confidence — review and edit the drafted response before dispatching, or promote it to the knowledge base.</p>
+                            <textarea id="hitl-editor" rows="4" class="hitl-textarea" placeholder="Edit the resolution response here..."></textarea>
+                            <div class="hitl-actions">
+                                <button class="btn-success" onclick="approveHitlResponse()">
+                                    <i class="fa-solid fa-check"></i> Approve &amp; Dispatch
+                                </button>
+                                <button class="btn-ghost" onclick="convertQueryToFaq()">
+                                    <i class="fa-solid fa-book-medical"></i> Save as FAQ
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Phase 6: Collapsible Advanced Results -->
+                        <div class="advanced-toggle" id="advanced-toggle" onclick="toggleAdvanced()">
+                            <span><i class="fa-solid fa-layer-group"></i> RAG Docs &amp; Execution Trace</span>
+                            <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="advanced-content" id="advanced-content">
+                            <!-- RAG Docs -->
+                            <div class="rag-docs-section">
+                                <h3><i class="fa-solid fa-layer-group"></i> Grounded RAG Documents</h3>
+                                <div id="rag-docs-list" class="rag-docs-list"></div>
+                            </div>
+                            <!-- Trace Log -->
+                            <div class="trace-section">
+                                <h3><i class="fa-solid fa-terminal"></i> Graph Execution Trace</h3>
+                                <ul id="trace-list" class="trace-list"></ul>
+                            </div>
+                        </div>
+
+                    </div><!-- /results-dashboard -->
+                </div><!-- /execution-panel -->
+            </div><!-- /grid-layout -->
+        </section>
+
+        <!-- ── TAB 2: KNOWLEDGE BASE ── -->
+        <section id="kb-tab" class="tab-content">
+            <div class="panel glass-panel">
+                <div class="kb-header">
+                    <h2><i class="fa-solid fa-database"></i> FAQ Knowledge Base</h2>
+                    <button class="btn btn-secondary" onclick="openAddFaqModal()"><i class="fa-solid fa-plus"></i> Add FAQ</button>
                 </div>
+                <div class="kb-filter-bar">
+                    <input type="text" id="kb-search" placeholder="Search by title, content, or tag..." oninput="filterFaqs()">
+                    <select id="kb-category-filter" onchange="filterFaqs()">
+                        <option value="all">All Categories</option>
+                        <option value="billing">Billing</option>
+                        <option value="technical">Technical</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                <div id="kb-grid" class="kb-grid"></div>
             </div>
-            <div class="kpi-card glass-panel">
-                <div class="kpi-icon icon-purple"><i class="fa-solid fa-bullseye"></i></div>
-                <div class="kpi-details">
-                    <span class="kpi-value" id="kpi-avg-conf">0.00</span>
-                    <span class="kpi-label">Avg. RAG Confidence</span>
+        </section>
+
+        <!-- ── TAB 3: PIPELINE ARCHITECTURE ── -->
+        <section id="graph-tab" class="tab-content">
+            <div class="panel glass-panel text-center">
+                <h2><i class="fa-solid fa-network-wired"></i> LangGraph Architecture &amp; State Flow</h2>
+                <p class="section-desc">Visual representation of the triage agent's decision state machine with Category Boosting, Negation-Aware Classification, and SSE Streaming.</p>
+                <div class="architecture-diagram">
+                    <div class="arch-card start-card">
+                        <i class="fa-solid fa-envelope" style="font-size:20px;color:#a5b4fc;margin-bottom:8px;display:block"></i>
+                        <h4>User Ticket Input</h4>
+                        <p>Raw customer message + customer ID + configurable confidence threshold</p>
+                    </div>
+                    <div class="arch-arrow">&darr;</div>
+                    <div class="arch-card">
+                        <span class="step-num">Node 1</span>
+                        <h4>Classify Node</h4>
+                        <p>3-layer negation-aware engine → category (billing/technical/general) &amp; priority</p>
+                    </div>
+                    <div class="arch-arrow">&darr;</div>
+                    <div class="arch-card">
+                        <span class="step-num">Node 2</span>
+                        <h4>Retrieve Node</h4>
+                        <p>Category-boosted TF-IDF cosine similarity search over FAQ knowledge base</p>
+                    </div>
+                    <div class="arch-arrow">&darr;</div>
+                    <div class="arch-card decision-card">
+                        <span class="step-num">Node 3</span>
+                        <h4>Decide Node</h4>
+                        <p>Confidence score ≥ threshold check → routing decision</p>
+                    </div>
+                    <div class="arch-split">
+                        <div class="split-branch success-branch">
+                            <span class="branch-label">≥ Threshold</span>
+                            <div class="arch-card draft-card">
+                                <span class="step-num">Node 4a</span>
+                                <h4>Draft Reply Node</h4>
+                                <p>Grounded LLM auto-response citing official FAQ documents</p>
+                            </div>
+                        </div>
+                        <div class="split-branch warn-branch">
+                            <span class="branch-label">&lt; Threshold</span>
+                            <div class="arch-card escalate-card">
+                                <span class="step-num">Node 4b</span>
+                                <h4>Escalate Node</h4>
+                                <p>Tier-2 human handoff + interactive HITL action console</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Navigation Tabs -->
-        <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="triage-tab"><i class="fa-solid fa-ticket"></i> Ticket Triage Sandbox</button>
-            <button class="tab-btn" data-tab="kb-tab"><i class="fa-solid fa-book-bookmark"></i> FAQ Knowledge Base (<span id="faq-count">14</span>)</button>
-            <button class="tab-btn" data-tab="graph-tab"><i class="fa-solid fa-network-wired"></i> LangGraph Visualizer</button>
-        </nav>
+    </main>
+</div>
 
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- TAB 1: Triage Sandbox -->
-            <section id="triage-tab" class="tab-content active">
-                <div class="grid-layout">
-                    <!-- Left Panel: Input & Controls -->
-                    <div class="panel glass-panel input-panel">
-                        <div class="panel-header">
-                            <h2><i class="fa-solid fa-pen-to-square"></i> Submit Customer Ticket</h2>
-                        </div>
-                        
-                        <!-- Quick Presets -->
-                        <div class="presets-section">
-                            <label><i class="fa-solid fa-bolt"></i> Sample Test Tickets:</label>
-                            <div class="preset-chips">
-                                <button class="chip" onclick="loadPreset('password')">🔑 Password Reset</button>
-                                <button class="chip" onclick="loadPreset('billing')">💳 Payment Failed</button>
-                                <button class="chip chip-special" onclick="loadPreset('negation')">🧠 Negation (Fix Bug, No Refund)</button>
-                                <button class="chip chip-warn" onclick="loadPreset('escalate')">⚠️ Ambiguous Smartwatch Request</button>
-                            </div>
-                        </div>
-
-                        <form id="triage-form" onsubmit="submitTicket(event)">
-                            <div class="form-group">
-                                <label for="customer_id">Customer ID:</label>
-                                <input type="text" id="customer_id" value="CUST-9042" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="ticket_text">Ticket Query / Message:</label>
-                                <textarea id="ticket_text" rows="5" placeholder="Enter customer inquiry or support request..." required></textarea>
-                            </div>
-
-                            <!-- Confidence Threshold Control -->
-                            <div class="form-group threshold-box">
-                                <div class="threshold-label">
-                                    <label for="threshold_slider"><i class="fa-solid fa-sliders"></i> Routing Confidence Threshold:</label>
-                                    <span id="threshold-val" class="threshold-display">0.60</span>
-                                </div>
-                                <input type="range" id="threshold_slider" min="0.30" max="0.90" step="0.05" value="0.60" oninput="updateThresholdDisplay(this.value)">
-                                <p class="help-text">Confidence &ge; threshold triggers auto-resolution. Confidence &lt; threshold safely routes to human support.</p>
-                            </div>
-
-                            <button type="submit" id="submit-btn" class="btn btn-primary">
-                                <i class="fa-solid fa-play"></i> Run Real-Time Streaming Triage
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Right Panel: Graph Pipeline Execution & Results -->
-                    <div class="panel glass-panel execution-panel">
-                        <!-- Node Execution Visual Graph Banner -->
-                        <div class="panel-header">
-                            <h2><i class="fa-solid fa-diagram-next"></i> Real-Time LangGraph Node Pipeline</h2>
-                            <span id="run-status" class="status-indicator ready">Ready</span>
-                        </div>
-
-                        <!-- Interactive Graph Pipeline Cards -->
-                        <div class="pipeline-flow">
-                            <div class="flow-node" id="node-classify">
-                                <div class="node-icon"><i class="fa-solid fa-filter"></i></div>
-                                <div class="node-body">
-                                    <div class="node-title">1. Classify Node</div>
-                                    <div class="node-sub" id="sub-classify">Pending...</div>
-                                </div>
-                            </div>
-                            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-
-                            <div class="flow-node" id="node-retrieve">
-                                <div class="node-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                <div class="node-body">
-                                    <div class="node-title">2. Retrieve Node</div>
-                                    <div class="node-sub" id="sub-retrieve">Pending...</div>
-                                </div>
-                            </div>
-                            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-
-                            <div class="flow-node" id="node-decide">
-                                <div class="node-icon"><i class="fa-solid fa-code-branch"></i></div>
-                                <div class="node-body">
-                                    <div class="node-title">3. Decide Node</div>
-                                    <div class="node-sub" id="sub-decide">Pending...</div>
-                                </div>
-                            </div>
-                            <div class="flow-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-
-                            <div class="flow-node" id="node-outcome">
-                                <div class="node-icon"><i class="fa-solid fa-paper-plane"></i></div>
-                                <div class="node-body">
-                                    <div class="node-title" id="title-outcome">4. Output Node</div>
-                                    <div class="node-sub" id="sub-outcome">Pending...</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Results Dashboard Grid -->
-                        <div class="results-dashboard" id="results-dashboard" style="display: none;">
-                            <!-- Top Stats Summary -->
-                            <div class="stats-row">
-                                <div class="stat-card">
-                                    <span class="stat-label">Category</span>
-                                    <span class="stat-value" id="res-category">-</span>
-                                </div>
-                                <div class="stat-card">
-                                    <span class="stat-label">Priority</span>
-                                    <span class="stat-value" id="res-priority">-</span>
-                                </div>
-                                <div class="stat-card">
-                                    <span class="stat-label">Confidence Score</span>
-                                    <span class="stat-value" id="res-confidence">-</span>
-                                </div>
-                                <div class="stat-card">
-                                    <span class="stat-label">Final Action</span>
-                                    <span class="stat-value" id="res-status">-</span>
-                                </div>
-                            </div>
-
-                            <!-- Generated Response / Escalation Report -->
-                            <div class="response-box" id="response-box">
-                                <div class="box-header">
-                                    <h3 id="response-box-title"><i class="fa-solid fa-robot"></i> Generated Auto-Draft Response</h3>
-                                </div>
-                                <div class="box-body" id="response-body">
-                                    Execute a ticket to see output.
-                                </div>
-                            </div>
-
-                            <!-- Human-in-the-Loop (HITL) Action Drawer -->
-                            <div class="hitl-panel glass-panel" id="hitl-panel" style="display: none;">
-                                <div class="hitl-header">
-                                    <h4><i class="fa-solid fa-user-gear"></i> Human-in-the-Loop (HITL) Action Console</h4>
-                                    <span class="badge badge-hitl">Tier-2 Agent Review</span>
-                                </div>
-                                <p class="hitl-desc">This ticket was escalated due to low retrieval confidence. You can modify the drafted response and dispatch it or add it to the knowledge base.</p>
-                                <textarea id="hitl-editor" rows="4" class="hitl-textarea" placeholder="Edit the resolution response here before approving..."></textarea>
-                                <div class="hitl-actions">
-                                    <button class="btn btn-success" onclick="approveHitlResponse()"><i class="fa-solid fa-check"></i> Approve & Dispatch Resolution</button>
-                                    <button class="btn btn-secondary" onclick="convertQueryToFaq()"><i class="fa-solid fa-book-medical"></i> Save as New Knowledge Base FAQ</button>
-                                </div>
-                            </div>
-
-                            <!-- Retrieved RAG Knowledge Chunks -->
-                            <div class="rag-docs-section">
-                                <h3><i class="fa-solid fa-layer-group"></i> Grounded RAG Documentation Chunks</h3>
-                                <div id="rag-docs-list" class="rag-docs-list">
-                                    <!-- Dynamic Cards -->
-                                </div>
-                            </div>
-
-                            <!-- Graph Node Execution Trace Log -->
-                            <div class="trace-section">
-                                <h3><i class="fa-solid fa-terminal"></i> Real-Time Graph Execution Trace</h3>
-                                <ul id="trace-list" class="trace-list">
-                                    <!-- Dynamic Trace Items -->
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 2: Knowledge Base Inspector -->
-            <section id="kb-tab" class="tab-content">
-                <div class="panel glass-panel">
-                    <div class="kb-header">
-                        <h2><i class="fa-solid fa-database"></i> FAQ Knowledge Base Index</h2>
-                        <button class="btn btn-secondary" onclick="openAddFaqModal()"><i class="fa-solid fa-plus"></i> Add New FAQ Chunk</button>
-                    </div>
-
-                    <div class="kb-filter-bar">
-                        <input type="text" id="kb-search" placeholder="Search FAQs by title, content, or tag..." oninput="filterFaqs()">
-                        <select id="kb-category-filter" onchange="filterFaqs()">
-                            <option value="all">All Categories</option>
-                            <option value="billing">Billing</option>
-                            <option value="technical">Technical</option>
-                            <option value="general">General</option>
-                        </select>
-                    </div>
-
-                    <div id="kb-grid" class="kb-grid">
-                        <!-- Dynamic FAQ Cards -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB 3: LangGraph Visualizer -->
-            <section id="graph-tab" class="tab-content">
-                <div class="panel glass-panel text-center">
-                    <h2><i class="fa-solid fa-network-wired"></i> LangGraph Architecture & State Flow</h2>
-                    <p class="section-desc">Visual representation of the Support Ticket Triage Agent's decision state machine with Category Boosting and SSE Streaming.</p>
-
-                    <div class="architecture-diagram">
-                        <div class="arch-card start-card">
-                            <i class="fa-solid fa-envelope"></i>
-                            <h4>User Ticket Input</h4>
-                            <p>Raw text + customer metadata</p>
-                        </div>
-                        <div class="arch-arrow">&rarr;</div>
-
-                        <div class="arch-card">
-                            <span class="step-num">Node 1</span>
-                            <h4>Classify Node</h4>
-                            <p>Negation-aware semantic engine for category (billing/technical/general) & priority</p>
-                        </div>
-                        <div class="arch-arrow">&rarr;</div>
-
-                        <div class="arch-card">
-                            <span class="step-num">Node 2</span>
-                            <h4>Retrieve Node</h4>
-                            <p>Category-boosted vector/TF-IDF similarity search & confidence margin score</p>
-                        </div>
-                        <div class="arch-arrow">&rarr;</div>
-
-                        <div class="arch-card decision-card">
-                            <span class="step-num">Node 3</span>
-                            <h4>Decide Node</h4>
-                            <p>Confidence &ge; Threshold check</p>
-                        </div>
-
-                        <div class="arch-split">
-                            <div class="split-branch success-branch">
-                                <span class="branch-label">&ge; Threshold</span>
-                                <div class="arch-card outcome-card draft-card">
-                                    <span class="step-num">Node 4a</span>
-                                    <h4>Draft Reply Node</h4>
-                                    <p>Grounded LLM/template resolution with official FAQ citations</p>
-                                </div>
-                            </div>
-                            <div class="split-branch warn-branch">
-                                <span class="branch-label">&lt; Threshold</span>
-                                <div class="arch-card outcome-card escalate-card">
-                                    <span class="step-num">Node 4b</span>
-                                    <h4>Escalate Node</h4>
-                                    <p>Human tier-2 support handoff ticket & interactive HITL console</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Modal for Adding Custom FAQ -->
-    <div id="add-faq-modal" class="modal">
-        <div class="modal-content glass-panel">
-            <div class="modal-header">
-                <h3 id="modal-heading">Add New FAQ Article</h3>
-                <button class="close-btn" onclick="closeAddFaqModal()">&times;</button>
-            </div>
-            <form onsubmit="saveCustomFaq(event)">
-                <div class="form-group">
-                    <label>Title:</label>
-                    <input type="text" id="new-faq-title" required placeholder="e.g. Enterprise SSO Configuration">
-                </div>
-                <div class="form-group">
-                    <label>Category:</label>
-                    <select id="new-faq-category" required>
-                        <option value="technical">Technical</option>
-                        <option value="billing">Billing</option>
-                        <option value="general">General</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Content / Resolution:</label>
-                    <textarea id="new-faq-content" rows="4" required placeholder="Detailed resolution steps..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Tags (comma separated):</label>
-                    <input type="text" id="new-faq-tags" placeholder="sso, saml, okta, security">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeAddFaqModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save to Vector Index</button>
-                </div>
-            </form>
+<!-- ═══════════════ ADD FAQ MODAL ═══════════════ -->
+<div id="add-faq-modal" class="modal">
+    <div class="modal-content glass-panel">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-book-medical" style="color:var(--accent-cyan);margin-right:8px"></i>Add New FAQ Article</h3>
+            <button class="close-btn" onclick="closeAddFaqModal()">&times;</button>
         </div>
+        <form onsubmit="saveCustomFaq(event)">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="new-faq-title" required placeholder="e.g. Enterprise SSO Configuration">
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="new-faq-category" required>
+                    <option value="technical">Technical</option>
+                    <option value="billing">Billing</option>
+                    <option value="general">General</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Content / Resolution Steps</label>
+                <textarea id="new-faq-content" rows="4" required placeholder="Detailed resolution steps..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Tags (comma separated)</label>
+                <input type="text" id="new-faq-tags" placeholder="sso, saml, okta, security">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeAddFaqModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" style="width:auto">Save to Knowledge Base</button>
+            </div>
+        </form>
     </div>
+</div>
 
-    <script src="/static/app.js"></script>
+<script src="/static/app.js"></script>
 </body>
 </html>

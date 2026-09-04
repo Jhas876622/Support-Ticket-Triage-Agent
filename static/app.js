@@ -59,19 +59,41 @@ function loadPreset(key) {
     updateThresholdDisplay(preset.threshold);
 }
 
+// Phase 5: Skeleton loading for KPI cards
+function setKpiSkeleton(on) {
+    ['kpi-card-total','kpi-card-auto','kpi-card-esc','kpi-card-conf'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('kpi-skeleton', on);
+    });
+}
+
 // Fetch and Update Analytics KPI Ribbon
 async function loadAnalytics() {
+    setKpiSkeleton(true);
     try {
         const res = await fetch("/api/analytics");
         if (!res.ok) return;
         const data = await res.json();
-        document.getElementById("kpi-total").innerText = data.total_processed || 0;
-        document.getElementById("kpi-auto-rate").innerText = `${data.auto_resolution_rate_pct || 0}%`;
-        document.getElementById("kpi-esc-rate").innerText = `${data.escalation_rate_pct || 0}%`;
-        document.getElementById("kpi-avg-conf").innerText = (data.avg_confidence_score || 0).toFixed(2);
+        document.getElementById("kpi-total").innerText = data.total_processed ?? 0;
+        document.getElementById("kpi-auto-rate").innerText = `${data.auto_resolution_rate_pct ?? 0}%`;
+        document.getElementById("kpi-esc-rate").innerText = `${data.escalation_rate_pct ?? 0}%`;
+        document.getElementById("kpi-avg-conf").innerText = (data.avg_confidence_score ?? 0).toFixed(2);
     } catch (e) {
         console.warn("Analytics fetch failed:", e);
+        ['kpi-total','kpi-auto-rate','kpi-esc-rate','kpi-avg-conf'].forEach(id => {
+            document.getElementById(id).innerText = '—';
+        });
+    } finally {
+        setKpiSkeleton(false);
     }
+}
+
+// Phase 6: Toggle Advanced Results section
+function toggleAdvanced() {
+    const toggle = document.getElementById('advanced-toggle');
+    const content = document.getElementById('advanced-content');
+    toggle.classList.toggle('open');
+    content.classList.toggle('open');
 }
 
 // Reset Node Visual State
@@ -80,11 +102,14 @@ function resetNodesVisual() {
         const el = document.getElementById(id);
         el.className = "flow-node";
     });
-    document.getElementById("sub-classify").innerText = "Pending...";
-    document.getElementById("sub-retrieve").innerText = "Pending...";
-    document.getElementById("sub-decide").innerText = "Pending...";
-    document.getElementById("sub-outcome").innerText = "Pending...";
+    document.getElementById("sub-classify").innerText = "Awaiting input";
+    document.getElementById("sub-retrieve").innerText = "Awaiting input";
+    document.getElementById("sub-decide").innerText = "Awaiting input";
+    document.getElementById("sub-outcome").innerText = "Awaiting input";
     document.getElementById("hitl-panel").style.display = "none";
+    // Close advanced section on reset
+    document.getElementById('advanced-toggle').classList.remove('open');
+    document.getElementById('advanced-content').classList.remove('open');
 }
 
 function setNodePulsing(nodeId, subText) {
@@ -117,9 +142,10 @@ async function submitTicket(event) {
 
     if (!ticket_text) return;
 
-    // Reset UI for stream
+    // Phase 5: Hide empty state, show results
     setRunStatus("running", "Streaming Pipeline Execution...");
     resetNodesVisual();
+    document.getElementById("results-empty-state").style.display = "none";
     document.getElementById("results-dashboard").style.display = "block";
     const submitBtn = document.getElementById("submit-btn");
     submitBtn.disabled = true;
@@ -327,9 +353,16 @@ async function loadFaqs() {
 function renderFaqGrid(docs) {
     const grid = document.getElementById("kb-grid");
     grid.innerHTML = "";
+    // Phase 5: FAQ empty state
+    if (docs.length === 0) {
+        grid.innerHTML = `<div class="faq-empty"><i class="fa-solid fa-magnifying-glass"></i><p>No FAQs match your search. Try a different keyword or category.</p></div>`;
+        return;
+    }
     docs.forEach(doc => {
         const card = document.createElement("div");
+        // Phase 7: data-cat for left border color
         card.className = "faq-card";
+        card.setAttribute('data-cat', doc.category);
         const tags = (doc.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join(" ");
         card.innerHTML = `
             <div class="faq-card-header">
