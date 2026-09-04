@@ -1,0 +1,100 @@
+[
+  {
+    "id": "faq_001",
+    "title": "Refund Policy & Process",
+    "category": "billing",
+    "content": "Customers can request a full refund within 14 days of purchase if they are unsatisfied. To request a refund, go to Account Settings > Billing History, select the invoice, and click 'Request Refund'. Refunds take 3-5 business days to process back to the original payment method.",
+    "tags": ["refund", "money back", "billing", "cancel purchase", "invoice"]
+  },
+  {
+    "id": "faq_002",
+    "title": "Failed Payment or Credit Card Declined",
+    "category": "billing",
+    "content": "If your credit card or automated subscription payment fails, check if the card has expired or reached daily transaction limits. Update your credit card details under Account Settings > Payment Methods. Retries are attempted automatically after 24 hours.",
+    "tags": ["payment failed", "credit card", "declined", "billing error", "retry"]
+  },
+  {
+    "id": "faq_003",
+    "title": "Downgrading or Canceling Subscription",
+    "category": "billing",
+    "content": "You can downgrade or cancel your active subscription anytime. Go to Billing > Plan Management > Cancel Plan. Your current plan features remain active until the end of your current billing cycle. No prorated refunds are given for partial months unless within the 14-day refund window.",
+    "tags": ["cancel subscription", "downgrade", "billing cycle", "cancel plan"]
+  },
+  {
+    "id": "faq_004",
+    "title": "Invoice & Tax Receipt Download",
+    "category": "billing",
+    "content": "Official VAT/GST tax invoices are generated automatically at the end of each billing cycle. Download PDF receipts from Billing > Invoices. If you need custom tax IDs added to your invoices, update your Billing Address Profile.",
+    "tags": ["invoice", "tax receipt", "vat", "gst", "pdf download"]
+  },
+  {
+    "id": "faq_005",
+    "title": "Password Reset & Account Lockout",
+    "category": "technical",
+    "content": "If you forgot your password or got locked out after 5 failed attempts, click 'Forgot Password' on the login screen. Enter your registered email to receive a secure reset link valid for 30 minutes. Check spam folders if the email doesn't arrive within 2 minutes.",
+    "tags": ["password reset", "lockout", "login error", "forgot password", "authentication"]
+  },
+  {
+    "id": "faq_006",
+    "title": "API Rate Limits & 429 Quota Exceeded",
+    "category": "technical",
+    "content": "HTTP 429 errors mean your application has exceeded rate limits. Free tier accounts have a limit of 60 requests per minute, while Pro tier accounts support up to 1,000 requests per minute. Implement exponential backoff retry logic or upgrade to Enterprise for dedicated throughput.",
+    "tags": ["api rate limit", "429 error", "quota exceeded", "api key", "throttling"]
+  },
+  {
+    "id": "faq_007",
+    "title": "Webhook Delivery Failures & Signatures",
+    "category": "technical",
+    "content": "If webhooks are failing, check your endpoint returns HTTP 200 within 5 seconds. Failed webhook events are retried up to 5 times with exponential backoff. Ensure HMAC SHA256 signature header verification matches your endpoint secret key.",
+    "tags": ["webhook", "signature verification", "hmac", "webhook failure", "payload"]
+  },
+  {
+    "id": "faq_008",
+    "title": "Two-Factor Authentication (2FA) Setup & Recovery",
+    "category": "technical",
+    "content": "Enable 2FA via Authenticator App (Google Authenticator, Authy, or 1Password) under Security Settings. Store your 16-character backup recovery codes in a safe place. If you lost your phone without backup codes, contact security support for identity verification.",
+    "tags": ["2fa", "two-factor", "authenticator", "backup codes", "security"]
+  },
+  {
+    "id": "faq_009",
+    "title": "SDK Integration & CORS Errors",
+    "category": "technical",
+    "content": "Cross-Origin Resource Sharing (CORS) errors occur when making client-side API calls from unauthorized domains. Add your web domain origin in Developer Dashboard > CORS Settings. For mobile/desktop SDK integrations, ensure you use server-side proxy tokens.",
+    "tags": ["cors", "sdk integration", "javascript error", "origin blocked"]
+  },
+  {
+    "id": "faq_0010",
+    "title": "System Status & Scheduled Maintenance",
+    "category": "general",
+    "content": "Check operational status of all services, API endpoints, and database clusters at status.example.com. Maintenance windows are scheduled on Sundays from 02:00 UTC to 04:00 UTC and announced 48 hours in advance.",
+    "tags": ["status", "downtime", "maintenance", "outage", "service check"]
+  },
+  {
+    "id": "faq_0011",
+    "title": "Enterprise Custom SLA & Support Response Times",
+    "category": "general",
+    "content": "Standard support operates Monday to Friday, 9 AM - 6 PM EST with a 24-hour SLA. Enterprise plan customers receive priority 24/7 dedicated support with a guaranteed 1-hour SLA for critical incidents.",
+    "tags": ["sla", "support hours", "enterprise support", "response time"]
+  },
+  {
+    "id": "faq_0012",
+    "title": "Data Privacy & GDPR / SOC2 Compliance",
+    "category": "general",
+    "content": "We are SOC 2 Type II certified and fully compliant with GDPR and CCPA regulations. User data is encrypted at rest using AES-256 and in transit via TLS 1.3. You can request a complete data export or right-to-be-forgotten deletion from Privacy Settings.",
+    "tags": ["gdpr", "soc2", "privacy", "data export", "encryption", "compliance"]
+  },
+  {
+    "id": "faq_0013",
+    "title": "Team Member Roles & Workspace Permissions",
+    "category": "general",
+    "content": "Workspace admins can invite team members and assign roles: Admin (full access), Developer (API & integrations access), or Viewer (read-only metrics). Go to Workspace Settings > Team Members to manage seats.",
+    "tags": ["team roles", "workspace settings", "permissions", "admin", "invite user"]
+  },
+  {
+    "id": "faq_0014",
+    "title": "Custom Integration & Professional Services",
+    "category": "general",
+    "content": "Need help setting up custom integrations or migrating enterprise workloads? Our Professional Services engineering team offers dedicated onboarding, custom ETL pipelines, and architecture reviews. Contact sales@example.com.",
+    "tags": ["custom integration", "professional services", "onboarding", "enterprise migration"]
+  }
+]
