@@ -67,9 +67,9 @@
 
     <!-- ═══════════════ NAV TABS ═══════════════ -->
     <nav class="nav-tabs">
-        <button class="tab-btn active" data-tab="triage-tab"><i class="fa-solid fa-ticket"></i> Triage Console</button>
-        <button class="tab-btn" data-tab="kb-tab"><i class="fa-solid fa-book-bookmark"></i> Knowledge Base (<span id="faq-count">14</span>)</button>
-        <button class="tab-btn" data-tab="graph-tab"><i class="fa-solid fa-network-wired"></i> Pipeline Architecture</button>
+        <button class="tab-btn active" data-tab="triage-tab"><i class="fa-solid fa-ticket"></i><span class="tab-label"> Triage Console</span></button>
+        <button class="tab-btn" data-tab="kb-tab"><i class="fa-solid fa-book-bookmark"></i><span class="tab-label"> Knowledge Base (<span id="faq-count">14</span>)</span></button>
+        <button class="tab-btn" data-tab="graph-tab"><i class="fa-solid fa-network-wired"></i><span class="tab-label"> Architecture</span></button>
     </nav>
 
     <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
@@ -126,7 +126,9 @@
                         </div>
 
                         <button type="submit" id="submit-btn" class="btn btn-primary">
-                            <i class="fa-solid fa-play"></i> Run Real-Time Streaming Triage
+                            <i class="fa-solid fa-play"></i>
+                            <span class="submit-btn-text-long">Run Real-Time Streaming Triage</span>
+                            <span class="submit-btn-text-short">Run Triage</span>
                         </button>
                     </form>
                 </div>
@@ -177,7 +179,10 @@
                     <div class="empty-state" id="results-empty-state">
                         <div class="empty-state-icon"><i class="fa-solid fa-rocket"></i></div>
                         <h3>Ready to Triage</h3>
-                        <p>Select a preset or enter a customer ticket, then click Run to see the live pipeline in action.</p>
+                        <p>Select a preset ticket or write your own query, then click Run to see the live AI pipeline execute in real time.</p>
+                        <button class="empty-state-cta" onclick="loadPreset('password'); document.getElementById('submit-btn').focus()">
+                            <i class="fa-solid fa-bolt"></i> Try a Sample Ticket
+                        </button>
                     </div>
 
                     <!-- Results Dashboard (hidden until run) -->
@@ -185,19 +190,19 @@
 
                         <!-- Stats Row -->
                         <div class="stats-row">
-                            <div class="stat-card">
+                            <div class="stat-card stat-category">
                                 <span class="stat-label">Category</span>
                                 <span class="stat-value" id="res-category">—</span>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card stat-priority">
                                 <span class="stat-label">Priority</span>
                                 <span class="stat-value" id="res-priority">—</span>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card stat-confidence">
                                 <span class="stat-label">Confidence</span>
                                 <span class="stat-value" id="res-confidence">—</span>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card stat-action">
                                 <span class="stat-label">Final Action</span>
                                 <span class="stat-value" id="res-status">—</span>
                             </div>
@@ -231,19 +236,23 @@
 
                         <!-- Phase 6: Collapsible Advanced Results -->
                         <div class="advanced-toggle" id="advanced-toggle" onclick="toggleAdvanced()">
-                            <span><i class="fa-solid fa-layer-group"></i> RAG Docs &amp; Execution Trace</span>
+                            <span><i class="fa-solid fa-layer-group"></i> RAG Docs &amp; Execution Trace <span class="toggle-count" id="toggle-doc-count" style="display:none"></span></span>
                             <i class="fa-solid fa-chevron-down toggle-icon"></i>
                         </div>
                         <div class="advanced-content" id="advanced-content">
                             <!-- RAG Docs -->
                             <div class="rag-docs-section">
                                 <h3><i class="fa-solid fa-layer-group"></i> Grounded RAG Documents</h3>
-                                <div id="rag-docs-list" class="rag-docs-list"></div>
+                                <div id="rag-docs-list" class="rag-docs-list">
+                                    <div class="rag-empty-card"><i class="fa-solid fa-database"></i>Run a ticket to see retrieved knowledge base documents.</div>
+                                </div>
                             </div>
                             <!-- Trace Log -->
                             <div class="trace-section">
                                 <h3><i class="fa-solid fa-terminal"></i> Graph Execution Trace</h3>
-                                <ul id="trace-list" class="trace-list"></ul>
+                                <ul id="trace-list" class="trace-list">
+                                    <li class="trace-empty">// Pipeline trace will appear here during execution...</li>
+                                </ul>
                             </div>
                         </div>
 

@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupTabNavigation();
     loadFaqs();
     loadAnalytics();
+    // Set initial threshold color zone
+    updateThresholdDisplay(document.getElementById('threshold_slider').value);
 });
 
 // Tab Switcher
@@ -47,7 +49,14 @@ function setupTabNavigation() {
 }
 
 function updateThresholdDisplay(val) {
-    document.getElementById("threshold-val").innerText = parseFloat(val).toFixed(2);
+    const v = parseFloat(val);
+    const el = document.getElementById("threshold-val");
+    el.innerText = v.toFixed(2);
+    // IA: Color zone feedback
+    el.className = 'threshold-display';
+    if (v < 0.50)      el.classList.add('zone-strict');
+    else if (v < 0.70) el.classList.add('zone-balanced');
+    else               el.classList.add('zone-auto');
 }
 
 function loadPreset(key) {
@@ -248,6 +257,9 @@ function handleStreamEvent(data) {
 function appendTraceItem(step) {
     if (!step) return;
     const traceList = document.getElementById("trace-list");
+    // Remove empty placeholder on first real item
+    const emptyLi = traceList.querySelector('.trace-empty');
+    if (emptyLi) emptyLi.remove();
     const li = document.createElement("li");
     li.className = "trace-item";
     const latencyTag = step.latency_ms ? ` <small style="color:var(--accent-cyan)">(${step.latency_ms}ms)</small>` : "";
@@ -290,6 +302,14 @@ function renderFinalDashboard(data) {
         const hitlPanel = document.getElementById("hitl-panel");
         hitlPanel.style.display = "block";
         document.getElementById("hitl-editor").value = `Hello, regarding your inquiry ("${data.ticket_text.substring(0, 60)}..."): Our senior support team has reviewed your request. Here are the customized steps...`;
+    }
+
+    // IA: Update toggle count badge
+    const docCount = data.retrieved_docs ? data.retrieved_docs.length : 0;
+    const countBadge = document.getElementById('toggle-doc-count');
+    if (countBadge) {
+        countBadge.innerText = `${docCount} doc${docCount !== 1 ? 's' : ''}`;
+        countBadge.style.display = docCount > 0 ? 'inline' : 'none';
     }
 
     // Render RAG Docs
